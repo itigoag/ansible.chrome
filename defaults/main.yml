@@ -1,2 +1,5 @@
 ---
 # defaults file for itigoag.chrome
+
+chrome_browser: googlechrome
+chrome_install: true

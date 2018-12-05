@@ -1,2 +1,27 @@
 ---
 # tasks file for itigoag.chrome
+
+- name: gather facts from chocolatey
+  win_chocolatey_facts:
+  when: ansible_chocolatey is undefined
+  tags:
+    - configuration
+    - packages
+
+- block:
+
+    - name: "windows : install {{ chrome_browser }}"
+      win_chocolatey:
+        name: "{{ chrome_browser }}"
+      when: >
+        packages is undefined or
+        not ( string | json_query(query) )
+      vars:
+        query: '[?package==`chromium`]'
+        string: "{{ ansible_chocolatey.packages | lower }}"
+      tags:
+        - packages
+
+  when: >
+    chrome_install and (packages is undefined or packages[chrome_browser] is defined) or
+    packages is defined and packages[chrome_browser] is defined
