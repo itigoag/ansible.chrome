@@ -30,7 +30,7 @@
         type: "{{ item.value.type | default('dword')}}"
       with_dict:
         - "{{ chrome_policy }}"
-        
+
   when: >
     chrome_install and (packages is undefined or packages[chrome_browser] is defined) or
     packages is defined and packages[chrome_browser] is defined
