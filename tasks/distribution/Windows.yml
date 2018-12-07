@@ -17,10 +17,19 @@
         packages is undefined or
         not ( string | json_query(query) )
       vars:
-        query: '[?package==`chromium`]'
+        query: '[?package==`{{ chrome_browser }}`]'
         string: "{{ ansible_chocolatey.packages | lower }}"
       tags:
         - packages
+
+    - name: create policies keys
+      win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: "{{ item.key }}"
+        data: "{{ item.value.data | default(item.value) }}"
+        type: "{{ item.value.type | default('dword')}}"
+      with_dict:
+        - "{{ chrome_policy }}"
 
   when: >
     chrome_install and (packages is undefined or packages[chrome_browser] is defined) or

@@ -3,3 +3,6 @@
 
 chrome_browser: googlechrome
 chrome_install: true
+
+chrome_policy:
+  PasswordManagerEnabled: "0x00000000"
